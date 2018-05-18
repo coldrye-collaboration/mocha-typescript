@@ -45,7 +45,7 @@ let contextSymbol = nodeSymbol("context");
 let handled = nodeSymbol("handled");
 
 interface MochaDone {
-    (error?: any): any;
+		(error?: any): any;
 }
 
 interface SuiteCtor {
@@ -186,49 +186,49 @@ function suiteClassCallback(target: SuiteCtor, context: TestFunctions) {
 		context.afterEach(afterEachFunction);
 
 		function runTests(prototype: any) {
-      (<any>Object).getOwnPropertyNames(prototype).forEach(key => {
-        try {
-          let method = <Function>prototype[key];
-          if (method === target) {
-            return;
-          }
+			(<any>Object).getOwnPropertyNames(prototype).forEach(key => {
+				try {
+					let method = <Function>prototype[key];
+					if (method === target) {
+						return;
+					}
 
-          let testName = method[testNameSymbol];
-          let shouldSkip = method[skipSymbol];
-          let shouldOnly = method[onlySymbol];
-          let shouldPending = method[pendingSumbol];
+					let testName = method[testNameSymbol];
+					let shouldSkip = method[skipSymbol];
+					let shouldOnly = method[onlySymbol];
+					let shouldPending = method[pendingSumbol];
 
-          let testFunc = (shouldSkip && context.it.skip)
-                         || (shouldOnly && context.it.only)
-                         || context.it;
+					let testFunc = (shouldSkip && context.it.skip)
+												 || (shouldOnly && context.it.only)
+												 || context.it;
 
-          if (testName || shouldOnly || shouldPending || shouldSkip) {
-            testName = testName || (<any>method).name;
-            if (shouldPending && !shouldSkip && !shouldOnly) {
-              context.it.skip(testName);
-            } else if (method.length > 0) {
-              testFunc(testName, noname(function(this: Mocha.ITestCallbackContext, done) {
-                applyDecorators(this, prototype, method, instance);
-                applyTestTraits(this, instance, method);
-                return method.call(instance, done);
-              }));
-            } else {
-              testFunc(testName, noname(function(this: Mocha.ITestCallbackContext) {
-                applyDecorators(this, prototype, method, instance);
-                applyTestTraits(this, instance, method);
-                return method.call(instance);
-              }));
-            }
-          }
-        } catch (e) {
-          // console.log(e);
-        }
-      });
-    }
+					if (testName || shouldOnly || shouldPending || shouldSkip) {
+						testName = testName || (<any>method).name;
+						if (shouldPending && !shouldSkip && !shouldOnly) {
+							context.it.skip(testName);
+						} else if (method.length > 0) {
+							testFunc(testName, noname(function(this: Mocha.ITestCallbackContext, done) {
+								applyDecorators(this, prototype, method, instance);
+								applyTestTraits(this, instance, method);
+								return method.call(instance, done);
+							}));
+						} else {
+							testFunc(testName, noname(function(this: Mocha.ITestCallbackContext) {
+								applyDecorators(this, prototype, method, instance);
+								applyTestTraits(this, instance, method);
+								return method.call(instance);
+							}));
+						}
+					}
+				} catch (e) {
+					// console.log(e);
+				}
+			});
+		}
 
-    // run all tests along the inheritance chain
-    let currentPrototype = prototype;
-    while (currentPrototype !== Object.prototype) {
+		// run all tests along the inheritance chain
+		let currentPrototype = prototype;
+		while (currentPrototype !== Object.prototype) {
 			runTests(currentPrototype);
 			currentPrototype = (<any>Object).getPrototypeOf(currentPrototype);
 		}
@@ -460,22 +460,22 @@ export function retries(count: number): MethodDecorator & PropertyDecorator & Cl
 }
 
 export const skipOnError: SuiteTrait = trait(function(ctx, ctor) {
-    ctx.beforeEach(function() {
-        if (ctor.__skip_all) {
-            this.skip();
-        }
-    });
-    ctx.afterEach(function() {
-        if (this.currentTest.state === "failed") {
-            ctor.__skip_all = true;
-        }
-    });
+		ctx.beforeEach(function() {
+				if (ctor.__skip_all) {
+						this.skip();
+				}
+		});
+		ctx.afterEach(function() {
+				if (this.currentTest.state === "failed") {
+						ctor.__skip_all = true;
+				}
+		});
 });
 
 /**
  * Mart a test or suite as pending.
- *  - Used as `@suite @pending class` is `describe.skip("name", ...);`.
- *  - Used as `@test @pending method` is `it("name");`
+ *	- Used as `@suite @pending class` is `describe.skip("name", ...);`.
+ *	- Used as `@test @pending method` is `it("name");`
  */
 export function pending<TFunction extends Function>(target: Object | TFunction, propertyKey?: string | symbol): void {
 	if (arguments.length === 1) {
@@ -487,8 +487,8 @@ export function pending<TFunction extends Function>(target: Object | TFunction, 
 
 /**
  * Mark a test or suite as the only one to execute.
- *  - Used as `@suite @only class` is `describe.only("name", ...)`.
- *  - Used as `@test @only method` is `it.only("name", ...)`.
+ *	- Used as `@suite @only class` is `describe.only("name", ...)`.
+ *	- Used as `@test @only method` is `it.only("name", ...)`.
  */
 export function only<TFunction extends Function>(target: Object, propertyKey?: string | symbol): void {
 	if (arguments.length === 1) {
@@ -500,8 +500,8 @@ export function only<TFunction extends Function>(target: Object, propertyKey?: s
 
 /**
  * Mark a test or suite to skip.
- *  - Used as `@suite @skip class` is `describe.skip("name", ...);`.
- *  - Used as `@test @skip method` is `it.skip("name")`.
+ *	- Used as `@suite @skip class` is `describe.skip("name", ...);`.
+ *	- Used as `@test @skip method` is `it.skip("name")`.
  */
 export function skip<TFunction extends Function>(target: Object | TFunction, propertyKey?: string | symbol): void {
 	if (arguments.length === 1) {

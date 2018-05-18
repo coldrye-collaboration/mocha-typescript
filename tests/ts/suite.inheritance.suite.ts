@@ -3,32 +3,32 @@ import { assert } from "chai";
 
 @suite class PartialTest {
 
-  protected _truthyValue: boolean;
+	protected _truthyValue: boolean;
 
-  before() {
+	before() {
 
-    this._truthyValue = true;
-  }
+	  this._truthyValue = true;
+	}
 
-  @test "test from PartialTest"() {
+	@test "test from PartialTest"() {
 
-    assert.isTrue(this._truthyValue, "truthyValue should have been true");
-  }
+	  assert.isTrue(this._truthyValue, "truthyValue should have been true");
+	}
 }
 
 @suite class CompleteTest extends PartialTest {
 
-  private _falsyValue = true;
+	private _falsyValue = true;
 
-  before(): void {
+	before(): void {
 
-    super.before();
+	  super.before();
 
-    this._falsyValue = false;
-  }
+	  this._falsyValue = false;
+	}
 
-  @test "test from CompleteTest"() {
+	@test "test from CompleteTest"() {
 
-    assert.isFalse(this._falsyValue, "falsyValue should have been false");
-  }
+	  assert.isFalse(this._falsyValue, "falsyValue should have been false");
+	}
 }
